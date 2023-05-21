@@ -24,9 +24,9 @@ export default function Page() {
 
   // count
   const [count, setCount] = useState(0);
-  const countUp = useCallback(() => {
+  const countUp = () => {
     setCount(count + 1);
-  }, []);
+  };
 
   // timer
   const [seconds, setSeconds] = useState(0);
@@ -36,9 +36,6 @@ export default function Page() {
       return;
     }
     intervalRef.current = setInterval(() => {
-      if (isPlaying && isComplete) {
-        stop();
-      }
       setSeconds((s) => s + 1);
     }, 1000);
   }, []);
