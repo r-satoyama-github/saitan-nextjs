@@ -1,13 +1,30 @@
 import styled from "styled-components";
 import { ColumnContainer } from "../containers/ColumnContainer";
 import { RowContainer } from "../containers/RowContainer";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { PrimaryButton } from "../buttons/PrimaryButton";
 import { Text } from "@/components/texts/Text";
 
-export const Order = (props) => {
+export const Order = memo((props) => {
   const { countUp, setIsComplete } = props;
-  const userItems = [1, 3, 5, 2, 4];
+  const userItems = [1, 3, 2, 5, 4];
+  /** 重複チェック用配列 */
+  //   var userItems = [];
+  /** 最小値と最大値 */
+  var min = 1,
+    max = 5;
+
+  /** 重複チェックしながら乱数作成 */
+  //   for (let i = min; i <= max; i++) {
+  //     while (true) {
+  //       let tmp = intRandom(min, max);
+  //       if (!userItems.includes(tmp)) {
+  //         userItems.push(tmp);
+  //         break;
+  //       }
+  //     }
+  //   }
+
   const [items, setItems] = useState(userItems);
   //   const [isOrdered, setIsOrdered] = useState(false);
   const onClickUp = (number) => {
@@ -19,7 +36,7 @@ export const Order = (props) => {
     }
     console.log(items);
     setItems([...items]);
-    if (IsOrdered(5, items)) {
+    if (IsOrdered(items.length, items)) {
       setIsComplete(true);
     }
     countUp();
@@ -64,7 +81,7 @@ export const Order = (props) => {
       </ColumnContainer>
     </>
   );
-};
+});
 
 const IsOrdered = (until, items) => {
   for (let i = 0; i < until; i++) {
@@ -74,6 +91,12 @@ const IsOrdered = (until, items) => {
   }
   return true;
 };
+
+/** min以上max以下の整数値の乱数を返す */
+function intRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const SItemRowContainer = styled(RowContainer)`
   background-color: var(--yellow-50);
   justify-content: space-around;

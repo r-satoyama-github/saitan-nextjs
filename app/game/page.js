@@ -24,9 +24,9 @@ export default function Page() {
 
   // count
   const [count, setCount] = useState(0);
-  const countUp = () => {
+  const countUp = useCallback(() => {
     setCount(count + 1);
-  };
+  }, []);
 
   // timer
   const [seconds, setSeconds] = useState(0);
