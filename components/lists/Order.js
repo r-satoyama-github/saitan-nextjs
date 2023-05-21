@@ -7,7 +7,8 @@ import { Text } from "@/components/texts/Text";
 
 export const Order = memo(function Order(props) {
   const { countUp, setIsComplete } = props;
-  const userItems = [1, 3, 2, 5, 4];
+  //   const userItems = [1, 3, 2, 5, 4];
+  const userItems = [1, 8, 2, 3, 7, 5, 6, 4];
   /** 重複チェック用配列 */
   //   var userItems = [];
   /** 最小値と最大値 */
