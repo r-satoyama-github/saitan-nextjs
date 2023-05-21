@@ -16,6 +16,7 @@ import {
 } from "react";
 import { styled } from "styled-components";
 import { Text } from "@/components/texts/Text";
+import Header from "@/components/layouts/Header";
 
 export default function Page() {
   const [isComplete, setIsComplete] = useState(false);
@@ -54,6 +55,7 @@ export default function Page() {
   return (
     <>
       {console.log("Rendered")}
+      <Header />
       <ColumnContainer>
         <div style={{ marginTop: "80px" }}></div>
         <Heading2>1から順にSAITANでならべよう</Heading2>
