@@ -17,6 +17,10 @@
   --green: #75d6b3;
   --orange-accent: #ff5e5e;
 
+  --yellow-10: #FFF2CC;
+  --yellow-50: #FFC000;
+  --orange: #ED7D31;
+
   /* タイポグラフィ（フォントサイズ） */
   --body: clamp(1rem, 0.95rem + 0.2vw, 1.125rem); /* 16-18px */
   --name: clamp(0.5rem, 0.6rem + 0.2vw, 1rem); /* 16px */
@@ -41,7 +45,7 @@
 body {
   /* color: var(--black); */
   color: var(--navy);
-  background-color: var(--beige-10);
+  background-color: var(--yellow-10);
   font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, Helvetica, sans-serif;
   font-size: var(--body);
   height: 100vh;

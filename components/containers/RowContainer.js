@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import BaseContainer from "./BaseContainer";
 
-export const RowContainer = styled(BaseContainer)`
+export const RowContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;

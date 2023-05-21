@@ -23,4 +23,5 @@ export default function Home() {
 
 const SColumnContainer = styled(ColumnContainer)`
   justify-content: space-evenly;
+  height: 100vh;
 `;

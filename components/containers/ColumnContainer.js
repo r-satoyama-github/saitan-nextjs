@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { BaseContainer } from "./BaseContainer";
 
-export const ColumnContainer = styled(BaseContainer)`
+export const ColumnContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
 `;
