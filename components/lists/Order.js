@@ -5,7 +5,7 @@ import { memo, useState } from "react";
 import { PrimaryButton } from "../buttons/PrimaryButton";
 import { Text } from "@/components/texts/Text";
 
-export const Order = memo((props) => {
+export const Order = memo(function Order(props) {
   const { countUp, setIsComplete } = props;
   const userItems = [1, 3, 2, 5, 4];
   /** 重複チェック用配列 */
