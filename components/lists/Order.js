@@ -84,14 +84,15 @@ export const Order = memo(function Order(props) {
 
   // react-beautiful-dnd
   const onDragEndTest = (result) => {
-    const newItems = [...items];
-    const deleteItem = newItems.splice(result.source.index, 1);
-    newItems.splice(result.destination.index, 0, deleteItem[0]);
-    setItems(newItems);
-
-    if (IsOrdered(5, items)) {
-      setIsComplete(true);
-    }
+    setItems((prevState) => {
+      let newItems = [...prevState];
+      const deleteElement = newItems.splice(result.source.index, 1)[0];
+      newItems.splice(result.destination.index, 0, deleteElement);
+      if (IsOrdered(5, newItems)) {
+        setIsComplete(true);
+      }
+      return newItems;
+    });
     countUp();
   };
   return (
@@ -117,12 +118,6 @@ export const Order = memo(function Order(props) {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        //   draggable={true}
-                        //   onDragStart={() => dragStart(index)}
-                        //   onDragEnter={() => dragEnter(index)}
-                        //   onDragOver={(event) => event.preventDefault()}
-                        //   onDragEnd={dragEnd}
-                        //   className={index === dragIndex ? "dragging" : ""}
                       >
                         <PrimaryButton
                           onClick={() => onClickDown(item)}
@@ -140,29 +135,6 @@ export const Order = memo(function Order(props) {
                       </SItemRowContainer>
                     )}
                   </Draggable>
-                  // <SItemRowContainer
-                  //   key={item}
-                  //   //   draggable={true}
-                  //   //   onDragStart={() => dragStart(index)}
-                  //   //   onDragEnter={() => dragEnter(index)}
-                  //   //   onDragOver={(event) => event.preventDefault()}
-                  //   //   onDragEnd={dragEnd}
-                  //   //   className={index === dragIndex ? "dragging" : ""}
-                  // >
-                  //   <PrimaryButton
-                  //     onClick={() => onClickDown(item)}
-                  //     style={{ backgroundColor: "var(--orange)" }}
-                  //   >
-                  //     下
-                  //   </PrimaryButton>
-                  //   <Text>{item}</Text>
-                  //   <PrimaryButton
-                  //     onClick={() => onClickUp(item)}
-                  //     style={{ backgroundColor: "var(--orange)" }}
-                  //   >
-                  //     上
-                  //   </PrimaryButton>
-                  // </SItemRowContainer>
                 );
               })}
               {provided.placeholder}
