@@ -4,6 +4,7 @@ import { RowContainer } from "../containers/RowContainer";
 import { memo, useEffect, useState } from "react";
 import { PrimaryButton } from "../buttons/PrimaryButton";
 import { Text } from "@/components/texts/Text";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 export const Order = memo(function Order(props) {
   const { countUp, setIsComplete } = props;
@@ -57,62 +58,118 @@ export const Order = memo(function Order(props) {
     countUp();
   };
 
-  const dragStart = (index) => {
-    setDragIndex(index);
-  };
-  const dragEnter = (index) => {
-    if (index === dragIndex) return;
-    setItems((prevState) => {
-      let newItems = [...prevState];
-      const deleteElement = newItems.splice(dragIndex, 1)[0];
-      newItems.splice(index, 0, deleteElement);
-      return newItems;
-    });
+  //   const dragStart = (index) => {
+  //     setDragIndex(index);
+  //   };
+  //   const dragEnter = (index) => {
+  //     if (index === dragIndex) return;
+  //     setItems((prevState) => {
+  //       let newItems = [...prevState];
+  //       const deleteElement = newItems.splice(dragIndex, 1)[0];
+  //       newItems.splice(index, 0, deleteElement);
+  //       return newItems;
+  //     });
+  //     if (IsOrdered(5, items)) {
+  //       setIsComplete(true);
+  //     }
+  //     countUp();
+  //     setDragIndex(index);
+  //   };
+
+  //   const dragEnd = () => {
+  //     setDragIndex(null);
+  //   };
+
+  //   const [dragIndex, setDragIndex] = useState(null);
+
+  // react-beautiful-dnd
+  const onDragEndTest = (result) => {
+    const newItems = [...items];
+    const deleteItem = newItems.splice(result.source.index, 1);
+    newItems.splice(result.destination.index, 0, deleteItem[0]);
+    setItems(newItems);
+
     if (IsOrdered(5, items)) {
       setIsComplete(true);
     }
     countUp();
-    setDragIndex(index);
   };
-
-  const dragEnd = () => {
-    setDragIndex(null);
-  };
-
-  const [dragIndex, setDragIndex] = useState(null);
-
   return (
     <>
       {console.log("Order Rendered")}
-      <ColumnContainer>
-        {items.map((item, index) => {
-          return (
-            <SItemRowContainer
-              key={item}
-              draggable={true}
-              onDragStart={() => dragStart(index)}
-              onDragEnter={() => dragEnter(index)}
-              onDragOver={(event) => event.preventDefault()}
-              onDragEnd={dragEnd}
-              className={index === dragIndex ? "dragging" : ""}
+      <DragDropContext onDragEnd={onDragEndTest}>
+        <Droppable droppableId="droppableId">
+          {(provided) => (
+            <ColumnContainer
+              {...provided.droppableProps}
+              ref={provided.innerRef}
             >
-              <PrimaryButton
-                onClick={() => onClickDown(item)}
-                style={{ backgroundColor: "var(--orange)" }}
-              >
-                下
-              </PrimaryButton>
-              <Text>{item}</Text>
-              <PrimaryButton
-                onClick={() => onClickUp(item)}
-                style={{ backgroundColor: "var(--orange)" }}
-              >
-                上
-              </PrimaryButton>
-            </SItemRowContainer>
-          );
-        })}
-      </ColumnContainer>
+              {items.map((item, index) => {
+                return (
+                  <Draggable
+                    key={item}
+                    draggableId={item.toString(10)}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <SItemRowContainer
+                        key={item}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        //   draggable={true}
+                        //   onDragStart={() => dragStart(index)}
+                        //   onDragEnter={() => dragEnter(index)}
+                        //   onDragOver={(event) => event.preventDefault()}
+                        //   onDragEnd={dragEnd}
+                        //   className={index === dragIndex ? "dragging" : ""}
+                      >
+                        <PrimaryButton
+                          onClick={() => onClickDown(item)}
+                          style={{ backgroundColor: "var(--orange)" }}
+                        >
+                          下
+                        </PrimaryButton>
+                        <Text>{item}</Text>
+                        <PrimaryButton
+                          onClick={() => onClickUp(item)}
+                          style={{ backgroundColor: "var(--orange)" }}
+                        >
+                          上
+                        </PrimaryButton>
+                      </SItemRowContainer>
+                    )}
+                  </Draggable>
+                  // <SItemRowContainer
+                  //   key={item}
+                  //   //   draggable={true}
+                  //   //   onDragStart={() => dragStart(index)}
+                  //   //   onDragEnter={() => dragEnter(index)}
+                  //   //   onDragOver={(event) => event.preventDefault()}
+                  //   //   onDragEnd={dragEnd}
+                  //   //   className={index === dragIndex ? "dragging" : ""}
+                  // >
+                  //   <PrimaryButton
+                  //     onClick={() => onClickDown(item)}
+                  //     style={{ backgroundColor: "var(--orange)" }}
+                  //   >
+                  //     下
+                  //   </PrimaryButton>
+                  //   <Text>{item}</Text>
+                  //   <PrimaryButton
+                  //     onClick={() => onClickUp(item)}
+                  //     style={{ backgroundColor: "var(--orange)" }}
+                  //   >
+                  //     上
+                  //   </PrimaryButton>
+                  // </SItemRowContainer>
+                );
+              })}
+              {provided.placeholder}
+            </ColumnContainer>
+          )}
+        </Droppable>
+      </DragDropContext>
     </>
   );
 });
