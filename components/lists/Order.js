@@ -5,6 +5,7 @@ import { memo, useEffect, useState } from "react";
 import { PrimaryButton } from "../buttons/PrimaryButton";
 import { Text } from "@/components/texts/Text";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import Image from "next/image";
 
 export const Order = memo(function Order(props) {
   const { countUp, setIsComplete } = props;
@@ -20,8 +21,22 @@ export const Order = memo(function Order(props) {
     for (let i = min; i <= max; i++) {
       while (true) {
         let tmp = intRandom(min, max);
-        if (!userItems.includes(tmp)) {
-          userItems.push(tmp);
+        if (
+          !userItems.some((item) => {
+            return item.id === tmp;
+          })
+        ) {
+          userItems.push({
+            id: tmp,
+            color:
+              "rgba(" +
+              ~~(256 * Math.random()) +
+              ", " +
+              ~~(256 * Math.random()) +
+              ", " +
+              ~~(256 * Math.random()) +
+              "0.5)",
+          });
           break;
         }
       }
@@ -29,30 +44,39 @@ export const Order = memo(function Order(props) {
   }, []);
 
   const [items, setItems] = useState(userItems);
-  const onClickUp = (number) => {
-    console.log(`up clicked ${number}`);
-    let index = items.indexOf(number);
-    console.log(`index is ${index}`);
+  //   const onClickUp = (number) => {
+  //     console.log(`up clicked ${number}`);
+  //     let index = items.indexOf(number);
+  //     console.log(`index is ${index}`);
+  //     if (index != 0) {
+  //       items.splice(index - 1, 2, items[index], items[index - 1]);
+  //     }
+  //     console.log(items);
+  //     setItems([...items]);
+  //     if (IsOrdered(items.length, items)) {
+  //       setIsComplete(true);
+  //     }
+  //     countUp();
+  //   };
+  const onClickUp = (number, index) => {
+    // let index = items.indexOf(number);
     if (index != 0) {
       items.splice(index - 1, 2, items[index], items[index - 1]);
     }
-    console.log(items);
     setItems([...items]);
     if (IsOrdered(items.length, items)) {
       setIsComplete(true);
     }
     countUp();
   };
-  const onClickDown = (number) => {
-    console.log(`down clicked ${number}`);
-    let index = items.indexOf(number);
-    console.log(`index is ${index}`);
+  const onClickDown = (number, index) => {
+    // let index = items.indexOf(number);
     if (index != items.length - 1) {
       items.splice(index, 2, items[index + 1], items[index]);
     }
     console.log(items);
     setItems([...items]);
-    if (IsOrdered(5, items)) {
+    if (IsOrdered(items.length, items)) {
       setIsComplete(true);
     }
     countUp();
@@ -83,22 +107,64 @@ export const Order = memo(function Order(props) {
   //   const [dragIndex, setDragIndex] = useState(null);
 
   // react-beautiful-dnd
-  const onDragEndTest = (result) => {
-    setItems((prevState) => {
-      let newItems = [...prevState];
-      const deleteElement = newItems.splice(result.source.index, 1)[0];
-      newItems.splice(result.destination.index, 0, deleteElement);
-      if (IsOrdered(5, newItems)) {
-        setIsComplete(true);
-      }
-      return newItems;
-    });
-    countUp();
-  };
+  //   const onDragEndTest = (result) => {
+  //     setItems((prevState) => {
+  //       let newItems = [...prevState];
+  //       const deleteElement = newItems.splice(result.source.index, 1)[0];
+  //       newItems.splice(result.destination.index, 0, deleteElement);
+  //       if (IsOrdered(5, newItems)) {
+  //         setIsComplete(true);
+  //       }
+  //       return newItems;
+  //     });
+  //     countUp();
+  //   };
+
   return (
     <>
-      {console.log("Order Rendered")}
-      <DragDropContext onDragEnd={onDragEndTest}>
+      {console.log("Order Rendered", items)}
+      <ColumnContainer id="list">
+        {items.map((item, index) => {
+          return (
+            <SItemRowContainer
+              key={item.id}
+              style={{ backgroundColor: item.color }}
+            >
+              {/* <PrimaryButton
+                onClick={() => onClickDown(item, index)}
+                style={{ backgroundColor: "var(--orange)" }}
+              >
+                下
+              </PrimaryButton> */}
+              <Image
+                src="/triangle.svg"
+                onClick={() => onClickDown(item, index)}
+                width={30}
+                height={30}
+                style={{ rotate: "180deg" }}
+              />
+              <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
+                {item.id}
+              </Text>
+              <Image
+                src="/triangle.svg"
+                onClick={() => onClickUp(item, index)}
+                width={30}
+                height={30}
+              />
+              {/* <PrimaryButton
+                onClick={() => onClickUp(item, index)}
+                style={{ backgroundColor: "var(--orange)" }}
+              >
+                上
+              </PrimaryButton> */}
+            </SItemRowContainer>
+          );
+        })}
+      </ColumnContainer>
+
+      {/* react-beautiful-dnd */}
+      {/* <DragDropContext onDragEnd={onDragEndTest}>
         <Droppable droppableId="droppableId">
           {(provided) => (
             <ColumnContainer
@@ -141,14 +207,14 @@ export const Order = memo(function Order(props) {
             </ColumnContainer>
           )}
         </Droppable>
-      </DragDropContext>
+      </DragDropContext> */}
     </>
   );
 });
 
 const IsOrdered = (until, items) => {
   for (let i = 0; i < until; i++) {
-    if (items[i] != i + 1) {
+    if (items[i].id != i + 1) {
       return false;
     }
   }
