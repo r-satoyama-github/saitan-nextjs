@@ -1,33 +1,33 @@
 import styled from "styled-components";
 import { ColumnContainer } from "../containers/ColumnContainer";
 import { RowContainer } from "../containers/RowContainer";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { PrimaryButton } from "../buttons/PrimaryButton";
 import { Text } from "@/components/texts/Text";
 
 export const Order = memo(function Order(props) {
   const { countUp, setIsComplete } = props;
-  //   const userItems = [1, 3, 2, 5, 4];
-  const userItems = [1, 8, 2, 3, 7, 5, 6, 4];
   /** 重複チェック用配列 */
-  //   var userItems = [];
-  /** 最小値と最大値 */
-  var min = 1,
-    max = 5;
+  //   const userItems = [1, 3, 2, 5, 4];
+  const userItems = [];
 
-  /** 重複チェックしながら乱数作成 */
-  //   for (let i = min; i <= max; i++) {
-  //     while (true) {
-  //       let tmp = intRandom(min, max);
-  //       if (!userItems.includes(tmp)) {
-  //         userItems.push(tmp);
-  //         break;
-  //       }
-  //     }
-  //   }
+  useEffect(() => {
+    /** 最小値と最大値 */
+    var min = 1,
+      max = 5;
+    /** 重複チェックしながら乱数作成 */
+    for (let i = min; i <= max; i++) {
+      while (true) {
+        let tmp = intRandom(min, max);
+        if (!userItems.includes(tmp)) {
+          userItems.push(tmp);
+          break;
+        }
+      }
+    }
+  }, []);
 
   const [items, setItems] = useState(userItems);
-  //   const [isOrdered, setIsOrdered] = useState(false);
   const onClickUp = (number) => {
     console.log(`up clicked ${number}`);
     let index = items.indexOf(number);
@@ -56,13 +56,46 @@ export const Order = memo(function Order(props) {
     }
     countUp();
   };
+
+  const dragStart = (index) => {
+    setDragIndex(index);
+  };
+  const dragEnter = (index) => {
+    if (index === dragIndex) return;
+    setItems((prevState) => {
+      let newItems = [...prevState];
+      const deleteElement = newItems.splice(dragIndex, 1)[0];
+      newItems.splice(index, 0, deleteElement);
+      return newItems;
+    });
+    if (IsOrdered(5, items)) {
+      setIsComplete(true);
+    }
+    countUp();
+    setDragIndex(index);
+  };
+
+  const dragEnd = () => {
+    setDragIndex(null);
+  };
+
+  const [dragIndex, setDragIndex] = useState(null);
+
   return (
     <>
       {console.log("Order Rendered")}
       <ColumnContainer>
-        {items.map((item) => {
+        {items.map((item, index) => {
           return (
-            <SItemRowContainer key={item}>
+            <SItemRowContainer
+              key={item}
+              draggable={true}
+              onDragStart={() => dragStart(index)}
+              onDragEnter={() => dragEnter(index)}
+              onDragOver={(event) => event.preventDefault()}
+              onDragEnd={dragEnd}
+              className={index === dragIndex ? "dragging" : ""}
+            >
               <PrimaryButton
                 onClick={() => onClickDown(item)}
                 style={{ backgroundColor: "var(--orange)" }}

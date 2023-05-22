@@ -83,3 +83,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+
+
+.dragging {
+  background-color: #eee;
+}
