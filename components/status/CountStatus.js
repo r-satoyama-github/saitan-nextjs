@@ -13,6 +13,7 @@ export const CountStatus = () => {
   // timer
   const [seconds, setSeconds] = useState(0);
   const intervalRef = useRef(null);
+
   useEffect(() => {
     if (intervalRef.current !== null) {
       return;
@@ -39,10 +40,18 @@ export const CountStatus = () => {
       })()}
       <SStatusRowContainer>
         <Text>
-          かうんと：<span>{count}</span>
+          かうんと：<SSpan>{count}</SSpan>
         </Text>
         <Text>
-          けいか：<span>{seconds}</span>
+          けいか：
+          <SSpan>
+            {(() => {
+              const result2 = new Date(seconds * 1000)
+                .toISOString()
+                .slice(14, 19);
+              return result2;
+            })()}
+          </SSpan>
         </Text>
       </SStatusRowContainer>
     </>
@@ -53,4 +62,9 @@ const SStatusRowContainer = styled(RowContainer)`
   justify-content: space-evenly;
   height: 50px;
   align-items: center;
+`;
+
+const SSpan = styled.span`
+  font-size: var(--heading2);
+  font-weight: bold;
 `;

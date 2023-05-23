@@ -23,6 +23,7 @@ import {
   CountStatusContext,
   CountStatusProvider,
 } from "@/components/providers/CountStatusProvider";
+import { Heading1 } from "@/components/texts/Heading1";
 
 export default function Page() {
   const context = useContext(CountStatusContext);
