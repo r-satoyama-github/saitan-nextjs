@@ -8,6 +8,7 @@ import { Heading2 } from "@/components/texts/Heading2";
 import {
   memo,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useReducer,
@@ -17,67 +18,35 @@ import {
 import { styled } from "styled-components";
 import { Text } from "@/components/texts/Text";
 import Header from "@/components/layouts/Header";
+import { CountStatus } from "@/components/status/CountStatus";
+import {
+  CountStatusContext,
+  CountStatusProvider,
+} from "@/components/providers/CountStatusProvider";
 
 export default function Page() {
-  const [isComplete, setIsComplete] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
-
-  // count
-  const [count, setCount] = useState(0);
-  const countUp = () => {
-    setCount(count + 1);
-  };
-
-  // timer
-  const [seconds, setSeconds] = useState(0);
-  const intervalRef = useRef(null);
-  useEffect(() => {
-    if (intervalRef.current !== null) {
-      return;
-    }
-    intervalRef.current = setInterval(() => {
-      setSeconds((s) => s + 1);
-    }, 1000);
-  }, []);
-
-  const stop = useCallback(() => {
-    if (intervalRef.current === null) {
-      return;
-    }
-    setIsPlaying(false);
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
-  }, []);
+  const context = useContext(CountStatusContext);
+  const { isComplete } = context;
+  console.log("Context", context);
+  const userItems = [
+    { id: 2, color: "rgba(30, 190, 62,0.5)" },
+    { id: 1, color: "rgba(117, 201, 68,0.5)" },
+    { id: 3, color: "rgba(22, 3, 123,0.5)" },
+    { id: 4, color: "rgba(187, 200, 121,0.5)" },
+    { id: 5, color: "rgba(192, 18, 112,0.5)" },
+  ];
 
   return (
     <>
-      {console.log("Rendered")}
-      <Header />
-      <ColumnContainer>
-        <div style={{ marginTop: "80px" }}></div>
-        <Heading2>1から順にSAITANでならべよう</Heading2>
-        <SStatusRowContainer>
-          <Text>
-            かうんと：<span>{count}</span>
-          </Text>
-          <Text>
-            けいか：<span>{seconds}</span>
-          </Text>
-        </SStatusRowContainer>
-        <Order countUp={countUp} setIsComplete={setIsComplete} />
-        {(() => {
-          if (isPlaying && isComplete) {
-            stop();
-          }
-        })()}
-        {isComplete && <Text>Complete!</Text>}
-      </ColumnContainer>
+      <CountStatusProvider>
+        <Header />
+        <ColumnContainer>
+          <div style={{ marginTop: "80px" }}></div>
+          <Heading2>1から順にSAITANでならべよう</Heading2>
+          <CountStatus />
+          <Order orderItems={userItems} />
+        </ColumnContainer>
+      </CountStatusProvider>
     </>
   );
 }
-
-const SStatusRowContainer = styled(RowContainer)`
-  justify-content: space-evenly;
-  height: 50px;
-  align-items: center;
-`;
