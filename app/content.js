@@ -2,7 +2,7 @@ import { PrimaryButton } from "@/components/buttons/PrimaryButton";
 import { ColumnContainer } from "@/components/containers/ColumnContainer";
 import { GameContext } from "@/components/providers/GameProvider";
 import { Heading1 } from "@/components/texts/Heading1";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { styled } from "styled-components";
 
