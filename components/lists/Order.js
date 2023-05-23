@@ -69,7 +69,6 @@ export const Order = function Order(props) {
             </SItemRowContainer>
           );
         })}
-        {isComplete && <Text>Complete!</Text>}
       </ColumnContainer>
     </>
   );

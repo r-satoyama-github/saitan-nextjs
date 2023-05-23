@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { RowContainer } from "../containers/RowContainer";
 import { Text } from "../texts/Text";
 
-export default function Header() {
+export default function Header(props) {
+  const { text = "ゲスト" } = props;
   return (
     <SHeader>
       <SRowContainer>
-        <Text>ゲストさん</Text>
+        <Text>{text}さん</Text>
       </SRowContainer>
     </SHeader>
   );
