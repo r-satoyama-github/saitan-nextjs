@@ -20,7 +20,7 @@ export const Content = () => {
     { id: 1, color: "rgba(117, 201, 68,0.5)" },
     { id: 3, color: "rgba(22, 3, 123,0.5)" },
     { id: 4, color: "rgba(187, 200, 121,0.5)" },
-    { id: 5, color: "rgba(192, 18, 112,0.5)" },
+    { id: 5, color: "rgba(192, 19, 112,0.5)" },
   ];
   const router = useRouter();
 
