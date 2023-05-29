@@ -1,18 +1,16 @@
 "use client";
 
-import Header from "@/components/layouts/Header";
-import { CountStatusProvider } from "@/components/providers/CountStatusProvider";
-import { Content } from "./content";
-import { GameProvider } from "@/components/providers/GameProvider";
+import { PlayField } from "./PlayField";
+import { useContext, useState } from "react";
+import { CompleteContext } from "@/components/providers/CompleteProvider";
+import { Result } from "./Result";
 
 export default function Page() {
-  return (
-    <>
-      <GameProvider>
-        <CountStatusProvider>
-          <Content />
-        </CountStatusProvider>
-      </GameProvider>
-    </>
-  );
+  console.log("Game Page Rendering");
+  const completeContext = useContext(CompleteContext);
+  const { isComplete, isPlaying } = completeContext;
+
+  console.log("Page IsComplete", isComplete);
+  console.log("Page IsPlaying", isPlaying);
+  return <>{isComplete && !isPlaying ? <Result /> : <PlayField />}</>;
 }

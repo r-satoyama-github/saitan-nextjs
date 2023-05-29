@@ -6,14 +6,19 @@ import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { styled } from "styled-components";
 
-export const Content = () => {
+export const Start = () => {
+  // GameContext
   const context = useContext(GameContext);
   const { user, setUser } = context;
+
+  // Use Router
   const router = useRouter();
+
   const onClickPrimary = () => {
     setUser("TEST USER");
     router.push("/game");
   };
+
   return (
     <>
       <SColumnContainer>

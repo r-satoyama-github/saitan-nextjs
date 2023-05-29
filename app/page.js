@@ -1,12 +1,7 @@
 "use client";
 
-import { GameProvider } from "@/components/providers/GameProvider";
-import { Content } from "./content";
+import { Start } from "./Start";
 
 export default function Home() {
-  return (
-    <GameProvider>
-      <Content />
-    </GameProvider>
-  );
+  return <Start />;
 }

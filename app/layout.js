@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { RootProviders } from "./RootProviders";
 
 export const metadata = {
   title: "SAITAN",
@@ -8,7 +9,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <RootProviders>{children}</RootProviders>
+      </body>
     </html>
   );
 }

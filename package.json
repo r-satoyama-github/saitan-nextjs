@@ -19,5 +19,8 @@
     "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "styled-components": "^6.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.2.4"
   }
 }
