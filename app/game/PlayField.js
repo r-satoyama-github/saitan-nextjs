@@ -83,7 +83,6 @@ export const PlayField = () => {
     <>
       <Header text={user} />
       <ColumnContainer>
-        <div style={{ marginTop: "80px" }}></div>
         <Heading2>1から順にSAITANでならべよう</Heading2>
 
         {/* カウント表示部 */}

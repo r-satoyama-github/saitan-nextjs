@@ -1,9 +1,14 @@
 import styled from "styled-components";
 import { RowContainer } from "../containers/RowContainer";
 import { Text } from "../texts/Text";
+import useAuth from "@/hooks/useAuth";
+import LogoutButton from "../buttons/LogoutButton";
 
-export default function Header(props) {
-  const { text = "ゲスト" } = props;
+export default function Header() {
+  const { session } = useAuth();
+
+  // const text = session ? session : "ゲスト";
+  const text = "guest";
   return (
     <SHeader>
       <SRowContainer>
@@ -20,7 +25,7 @@ const SHeader = styled.header`
   width: 100%;
   box-sizing: border-box;
   background-color: var(--yellow-50);
-  height: 50px;
+  height: 5vh;
 `;
 
 const SRowContainer = styled(RowContainer)`
